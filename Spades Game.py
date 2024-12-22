@@ -22,43 +22,6 @@ names = [
     "Harper", "Violet", "Mariam", "Greta", "Jasmine", "Anika", "Sienna", "Nadia", "Eva", "Maria"
 ]
 
-suits = ["S", "H", "C", "D"]
-rank = np.arange(start = 2, stop = 15)
-
-deck = [(s, r) for s in suits for r in rank]
-
-def rank_card(card):
-    
-    card_suit = card[0]
-    card_rank = card[1]
-    
-    if card_suit == "S" and card_rank in range(12, 15): # for spades queen, king, and ace
-        return 1.0
-    
-    elif card_suit == "S" and card_rank in range(10, 12): # for spade 10 and jack
-        return 0.75
-    
-    elif card_suit == "S" and card_rank in range(7, 10):
-        return 0.5
-    
-    elif card_suit == "S" and card_rank in range(2, 7):
-        return 0.25
-    
-    elif card_suit != "S" and card_rank == 14: # non spade aces
-        return 1.0
-    
-    elif card_suit != "S" and card_rank == 13: # non spade kings 
-        return 0.75
-    
-    elif card_suit != "S" and card_rank == 12: # non spade queens
-        return 0.5
-    
-    elif card_suit != "S" and card_rank in range(10, 12): # non spade 10 and jack
-        return 0.25
-    
-    elif card_suit != "S" and card_rank in range(2, 10):
-        return 0.0
-    
 def set_name():
     
     global names
@@ -131,7 +94,7 @@ def cards_ranker(played_cards):
             
 class Player():
     
-    def __init__(self, player_level):
+    def __init__(self):
         
         self.name = set_name()
         self.hand = []
@@ -148,16 +111,6 @@ class Player():
                 f"Player Tricks Predicted: {self.tricks_predicted}\n"
                 f"Player Partner: {partner_name}")
     
-    def get_hand_rank(self):
-        
-        hand_rank = 0
-    
-        for card in self.hand:
-            hand_rank = hand_rank + rank_card(card)
-            
-        self.tricks_predicted = math.floor(hand_rank) 
-        
-        return(f"Player {self.name} has predicted {self.tricks_predicted} books")
     
     def has_suit(self, suit):
         
@@ -402,7 +355,7 @@ class Spades_Game():
         self.tricks_data = spades_data
             
 players = [Player(), Player(), Player(), Player()]
-game = Spades_Game(players, 500000)
+game = Spades_Game(players, 100000)
 game.play_rounds()
 
 tricks_data = pd.DataFrame(game.tricks_data)
